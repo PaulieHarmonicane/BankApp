@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Внесение оплаты</title>
+    <style>
+        body, html {
+            
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column; 
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        body {
+            background-image: url("static/img/bgor.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        #header1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: rgb(255, 176, 66);
+            font-size: 100px;
+            -webkit-text-stroke: 2px black;
+        }
+        #layer1 {
+            display: flex;  
+            flex-direction: column;       
+            flex: 1 0 auto;        
+            justify-content: center; 
+            align-items: center;    
+            margin-bottom: 50px;
+        }
+        #layer2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 400px;
+        }
+        #layer3 {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            width: 400px;
+        }
+         .cl0 {
+            padding: 10px;
+            opacity: 0.8;
+        }
+        .box {      
+            position: absolute; 
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 200px;
+        }
+        .icon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 50px;
+            height: 50px;
+        }
+        .icon:hover {
+            width: 70px;
+            height: 70px;
+        }
+        #button0 {
+            padding: 10px;
+            cursor: pointer;
+            background: rgb(157, 219, 163);
+            border: 1px solid rgb(67, 115, 18);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(205, 130, 0);
+            border-radius: 10px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        #button0:hover {
+            background: rgb(193, 232, 180);
+            color: rgb(255, 169, 20);
+            transform: scale(1.05);
+        }
+        #label {
+            display: none;
+            padding: 15px 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgb(100, 100, 100); 
+            border-radius: 10px;
+            margin: 10px;
+            font-size: 20px;
+            color: rgb(140, 89, 1);
+            align-self: center;
+            
+        }
+        #error2 {
+            display: none;
+            padding: 20px 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            font-size: 20px;
+            align-self: center;
+            color: rgb(241, 161, 66);
+        }
+        #msg {
+            display: none;
+        }
+
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; /* скрыто по умолчанию */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal-window {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 250px;
+            text-align: center;
+            background-color: rgb(241, 180, 183);
+            font-weight: bold;
+            color: rgb(93, 158, 99);
+        }
+        @media (max-width: 600px) {
+            input, select, textarea {
+                font-size: 16px;
+            }
+            #header1 {
+                width: 80%;
+                font-size: 45px;
+                -webkit-text-stroke: 2px rgb(50, 50, 50);
+                margin-top: 90px;
+                align-self: center;
+            }
+
+            #layer2 {
+                width: 90%;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 12px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1 id="header1">Внесение доната</h1>
+    <div id="layer1">
+        <div id="layer2">
+            <select class="cl0" id="fund_id" placeholder="--Выберите фонд--">
+                <option value="Благотворительная больница">Благотворительная больница</option>
+                <option value="Одинаково разные">Одинаково разные</option>
+                <option value="Вместо мамы">Вместо мамы</option>
+                <option value="С другой стороны">С другой стороны</option>
+                <option value="Лагерь в боброво">Лагерь в боброво</option>
+            </select>
+            <input class="cl0" id="sum_id" placeholder="Сумма внесения">
+            <input class="cl0" id="date_id" type="date" value="2026-05-01">
+            <input class="cl0" id="time_id" type="time" value="00:00">
+            <button class="btn" id="button0" onclick="write_donation()">Принять оплату</button>
+        </div>
+        <div id="layer2">
+            <label id="label">
+            </label>
+        </div>
+        <div id="layer3">
+            <input class="cl0" id="code_id" placeholder = "ID внесенного пожертвования">
+            <input class="cl0" id="amount_id" placeholder="Количество выдаваемых долек">
+            <button class="btn" id="button0" onclick="withdraw_pieces()" style="margin-bottom: 20px">Выдать дольки</button>
+            <label id="error2"></label>
+        </div>
+    </div>
+    <div class="box">
+        <a href="{{ url_for('start_page') }}" class="homebtn">
+            <img src="{{ url_for('static', filename='img/home.png') }}" class="icon">
+
+        </a>
+    </div>
+    
+    <div id="modal-overlay">
+        <div id="modal-window">
+            <p id="compl"></p>
+            <button id="ok-btn">OK</button>
+        </div>
+    </div>
+
+    <script>
+    function write_donation() {
+        
+        const inp_data = {
+            "fund_name": document.getElementById("fund_id").value,
+            "rub_sum": document.getElementById("sum_id").value,
+            "date": document.getElementById("date_id").value,
+            "time": document.getElementById("time_id").value
+        }
+        if (inp_data["fund_name"] === "" || inp_data["rub_sum"] === "" || inp_data["date"] === "" || inp_data["time"] === "") {
+            document.getElementById("label").style.display = "inline-block"
+            document.getElementById("label").innerText = "Заполните все данные!!!";
+            return;
+        }
+        if (!Number.isInteger(Number(inp_data["rub_sum"]))) {
+            document.getElementById("label").style.display = "inline-block"
+            document.getElementById("label").innerText = "Введите корректную сумму!!!";
+            return
+        }
+        fetch("/add_donation", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                fund_name: inp_data["fund_name"],
+                rub_sum: Number(inp_data["rub_sum"]),
+                pieces_num: Math.floor(inp_data["rub_sum"]/60),
+                date: inp_data["date"],
+                time: inp_data["time"]
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            c_don = data.id
+            document.getElementById("label").innerText =
+                `Пожертвование сохранено. ID транзакции: ${c_don} Долек к выдаче: ${Math.floor(inp_data["rub_sum"]/60)}`;
+        })
+        .catch(err => {
+            console.error(err);
+            alert("Ошибка при отправке данных");
+        });
+            document.getElementById("label").style.display = "inline"
+            document.getElementById("layer3").style.display = "flex"
+
+        fetch("/add_total", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                fund: inp_data["fund_name"],
+                don_amount: Number(inp_data["rub_sum"])
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.msg === "completed") {
+                const overlay = document.getElementById("modal-overlay");
+                const okBtn = document.getElementById("ok-btn");
+                document.getElementById("compl").innerText = `Цель по фонду "${inp_data["fund_name"]}" выполнена! \nУберите табличку!!!`
+                overlay.style.display = "flex";
+                okBtn.addEventListener("click", () => {
+                    overlay.style.display = "none";
+                });
+                overlay.addEventListener("click", (event) => {
+                    if (event.target === overlay) {
+                        event.stopPropagation();
+                    }
+                });
+                document.addEventListener("keydown", (event) => {
+                    if (event.key === "Escape") {
+                        event.preventDefault();
+                    }
+                });
+
+            } 
+        })
+        }
+        
+    function withdraw_pieces() {
+            const id = Number(document.getElementById("code_id").value.trim());
+            const num_pieces = Number(document.getElementById("amount_id").value.trim());
+
+            if (!Number.isInteger(id) || id <= 0) {
+                document.getElementById("error2").style.display = "inline-block";
+                document.getElementById("error2").innerText = "Некорректный ID!";
+                return;
+            }
+
+            if (!Number.isInteger(num_pieces) || num_pieces <= 0) {
+                document.getElementById("error2").style.display = "inline-block";
+                document.getElementById("error2").innerText = "Введите корректное количество долек!";
+                return;
+            }
+
+            fetch("/update_pieces", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    id: id,
+                    pieces_num: num_pieces
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Ответ сервера:", data);
+
+                if (data.status === "not_found") {
+                    document.getElementById("error2").style.display = "inline-block";
+                    document.getElementById("error2").innerText = "Запись не найдена!";
+                } 
+                else if (data.status === "not_enough") {
+                    document.getElementById("error2").style.display = "inline-block";
+                    document.getElementById("error2").innerText = "Недостаточно долек на балансе!"
+                }
+                else if (data.status === "ok") {
+                    window.location.href = "{{ url_for('done_page') }}";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Ошибка при запросе");
+            });
+        }
+
+    </script>
+</body>
+</html>

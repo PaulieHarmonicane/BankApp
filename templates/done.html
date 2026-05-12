@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Готово!</title>
+    <style>
+        body, html {
+            
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column; 
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        body {
+            background-image: url("static/img/bgor.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        .lbl {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: rgb(237, 115, 56);
+            font-size: 100px;
+            -webkit-text-stroke: 2px black;
+        }
+        #layer1 {
+            display: flex; 
+            flex-direction: column;      
+            flex: 1 0 auto;         
+            justify-content: center; 
+            align-items: center;    
+        }
+        #layer2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 400px;
+
+
+        }
+        #figure {
+            display: inline-block;
+            background-color: rgba(240, 248, 255, 0.7);
+            padding: 100px 50px;
+            border-color: rgb(126, 126, 126);
+            border-radius: 20px;
+        }
+        .btn {
+            display: block;
+            width: 400px;
+            padding: 10px;
+            text-align: center;
+            background: rgb(173, 235, 153);
+            border: 1px solid rgb(67, 115, 18);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(205, 130, 0);
+            border-radius: 10px;
+        }
+        .btn:hover {
+            background: rgb(193, 232, 180);
+            color: rgb(255, 169, 20);
+            transform: scale(1.05);
+        }
+        .lbl {
+            align-self: center;
+            justify-content: center;
+            font-size: 40px;
+            color: rgb(237, 115, 56);
+            -webkit-text-stroke: 0.5px black;
+        }
+        @media (max-width: 600px) {
+            input, select, textarea {
+                font-size: 16px;
+            }
+            .lbl {
+                width: 70%;
+                font-size: 25px;
+                -webkit-text-stroke: 2px rgb(50, 50, 50);
+                margin-top: 90px;
+                align-items: center;
+
+            }
+
+            #layer2 {
+                width: 90%;
+            }
+
+            # figure {
+                width: 95%;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="layer1">
+        <div id="figure">
+            <div id="layer2">
+                <label class="lbl" id="message">Дольки выданы!</label>
+                <a href="{{ url_for('start_page') }}" class="btn">На главную</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

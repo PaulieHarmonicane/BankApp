@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrangeAdmin</title>
+    <style>
+        body, html {
+            
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column; 
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        body {
+            background-image: url("static/img/bgor.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        #header1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: rgb(255, 176, 66);
+            font-size: 60px;
+            -webkit-text-stroke: 3px rgb(50, 50, 50);
+        }
+        #layer1 {
+            display: flex;         
+            flex: 1 0 auto;          
+            justify-content: center; 
+            align-items: center;  
+        }
+        #layer2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 900px;
+            align-items: center;
+        }
+
+        #bg {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 40px 20px;
+            border-radius: 10px;
+        }
+        .btn {
+            display: block;
+            width: 400px;
+            padding: 10px;
+            text-align: center;
+            background: rgb(157, 219, 163);
+            border: 1px solid rgb(67, 115, 18);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(205, 130, 0);
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: rgb(193, 232, 180);
+            color: rgb(255, 169, 20);
+            transform: scale(1.05);
+        }
+
+        .box {      
+            position: absolute; 
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 200px;
+        }
+        .icon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 50px;
+            height: 50px;
+        }
+        .icon:hover {
+            width: 70px;
+            height: 70px;
+        }
+
+        #label {
+            display: none;
+            padding: 15px 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgb(100, 100, 100); 
+            border-radius: 10px;
+            margin: 10px;
+            font-size: 20px;
+            color: rgb(140, 89, 1);
+            align-self: center;
+        }
+
+        #statChart {
+            width: 100% !important;
+            height: 400px !important;
+        }
+
+        @media (max-width: 600px) {
+            #header1 {
+                width: 80%;
+                font-size: 36px;
+                -webkit-text-stroke: 2px rgb(50, 50, 50);
+                margin-top: 20px;
+                align-self: center;
+            }
+
+            #layer2 {
+                width: 90%;
+            }
+
+            #statsChart {
+                width: 100% !important;
+                height: 80% !important;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header1">
+    <h1>Сборы</h1>
+    </div>
+    <div id="layer1">
+        <div id="layer2">
+            <div id="bg">
+                <canvas id="statChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <div class="box">
+        <a href="{{ url_for('start_page') }}" class="homebtn">
+            <img src="{{ url_for('static', filename='img/home.png') }}" class="icon">
+
+        </a>
+    </div>
+    <script>
+        async function loadStats() {
+            const response = await fetch('/get_stat');
+            const result = await response.json();
+            return result.data;
+        }
+
+        async function drawChart() {
+            const stats = await loadStats();
+
+            const labels = stats.map(s => s.fund);
+            const goals = stats.map(s => s.goal);
+            const currents = stats.map(s => s.current);
+            console.log(labels);
+            console.log(goals);
+            console.log(currents);
+
+            const ctx = document.getElementById('statChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Цель',
+                            data: goals,
+                            backgroundColor: 'rgba(255, 99, 132, 0.4)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 2,
+                            barPercentage: 0.9,
+                            categoryPercentage: 0.9
+                        },
+                        {
+                            label: 'Собрано',
+                            data: currents,
+                            backgroundColor: 'rgba(54, 162, 235, 0.4)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 2,
+                            barPercentage: 0.9,
+                            categoryPercentage: 0.9
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        drawChart();
+
+
+    </script>
+</body>
+</html>

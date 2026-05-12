@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Выдача долек</title>
+    <style>
+        body, html {
+            
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column; 
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        body {
+            background-image: url("static/img/bgor.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        #header1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: rgb(255, 176, 66);
+            font-size: 100px;
+            -webkit-text-stroke: 2px black;
+        }
+        #layer1 {
+            display: flex;  
+            flex-direction: column;       
+            flex: 1 0 auto;        
+            justify-content: center; 
+            align-items: center;    
+            margin-bottom: 50px;
+        }
+        #layer2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 400px;
+        }
+         .cl0 {
+            padding: 10px;
+            opacity: 0.8;
+        }
+        .box {      
+            position: absolute; 
+            top: 0;
+            right: 0;
+            width: 300px;
+            height: 200px;
+        }
+        .icon {
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            width: 50px;
+            height: 50px;
+        }
+        .icon:hover {
+            width: 70px;
+            height: 70px;
+        }
+        .btn0 {
+            padding: 10px;
+            cursor: pointer;
+            background: rgb(157, 219, 163);
+            border: 1px solid rgb(67, 115, 18);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(205, 130, 0);
+            border-radius: 10px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 15px;
+            font-weight: bold;
+            width: 50px;
+        }
+        .btn0:hover {
+            background: rgb(193, 232, 180);
+            color: rgb(255, 169, 20);
+            transform: scale(1.05);
+        }
+        .btn {
+            padding: 10px;
+            cursor: pointer;
+            background: rgb(157, 219, 163);
+            border: 1px solid rgb(67, 115, 18);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(205, 130, 0);
+            border-radius: 10px;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: rgb(193, 232, 180);
+            color: rgb(255, 169, 20);
+            transform: scale(1.05);
+        }
+        #label {
+            display: none;
+            padding: 15px 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 2px solid rgb(100, 100, 100); 
+            border-radius: 10px;
+            margin: 10px;
+            font-size: 20px;
+            color: rgb(140, 89, 1);
+            align-self: center;
+            
+        }
+        .error {
+            display: none;
+            padding: 20px 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            font-size: 20px;
+            align-self: center;
+            color: rgb(241, 161, 66);
+        }
+        #msg {
+            display: none;
+        }
+
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; 
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal-window {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 250px;
+            text-align: center;
+            background-color: rgb(241, 180, 183);
+            font-weight: bold;
+            color: rgb(93, 158, 99);
+        }
+        @media (max-width: 600px) {
+            input, select, textarea {
+                font-size: 16px;
+            }
+            #header1 {
+                width: 80%;
+                font-size: 45px;
+                -webkit-text-stroke: 2px rgb(50, 50, 50);
+                margin-top: 90px;
+                align-self: center;
+            }
+
+            #layer2 {
+                width: 90%;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 12px;
+            }
+
+            .btn0 {
+                width: 40%;
+                font-size: 14px;
+                paddind: 12px;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1 id="header1">Выдача долек</h1>
+    <div id="layer1">
+        <div id="layer2">
+            <div id="get_num">
+                <input class="cl0" id="code_id" placeholder="Введите код транзакции">
+                <button class="btn0" id="button0" onclick="piece_balance()">Проверить баланс</button>
+                <label id="lbl"></label> 
+            </div>
+            <label class="error" id="error1"></label>
+            <input class="cl0" id="pn_id" placeholder="Введите количество долек">
+            <button class="btn" id="button1" onclick="withdraw_pieces()">Выдать дольки</button>
+            <label class="error" id="error2"></label>
+        </div>
+    </div>
+    <div class="box">
+        <a href="{{ url_for('start_page') }}" class="homebtn">
+            <img src="{{ url_for('static', filename='img/home.png') }}" class="icon">
+
+        </a>
+    </div>
+    <script>
+        let current_balance;
+        function piece_balance() {
+            const code_check = Number(document.getElementById("code_id").value);
+            fetch(`/find_donation_by_id?id=${code_check}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === -1) {
+
+                        document.getElementById("code_id").value = "";
+                        document.getElementById("lbl").style.display = "none";
+                        document.getElementById("error1").style.display = "inline-block"
+                        document.getElementById("error1").innerText = "Запись не найдена!";
+                    } else {
+                        document.getElementById("lbl").style.display = "inline";
+                        document.getElementById("error1").style.display = "none"
+                        document.getElementById("pn_id").value = data.pieces_num;
+                        current_balance = Number(data.pieces_num);
+
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Ошибка при запросе");
+                });
+        }
+        function withdraw_pieces() {
+            const id = Number(document.getElementById("code_id").value.trim());
+            const num_pieces = Number(document.getElementById("pn_id").value.trim());
+
+            if (!Number.isInteger(id) || id <= 0) {
+                document.getElementById("error2").style.display = "inline-block";
+                document.getElementById("error2").innerText = "Некорректный ID!";
+                return;
+            }
+
+            if (!Number.isInteger(num_pieces) || num_pieces <= 0) {
+                document.getElementById("error2").style.display = "inline-block";
+                document.getElementById("error2").innerText = "Введите корректное количество долек!";
+                return;
+            }
+
+            fetch("/update_pieces", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    id: id,
+                    pieces_num: num_pieces
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Ответ сервера:", data);
+
+                if (data.status === "not_found") {
+                    document.getElementById("error2").style.display = "inline-block";
+                    document.getElementById("error2").innerText = "Запись не найдена!";
+                } 
+                else if (data.status === "not_enough") {
+                    document.getElementById("error2").style.display = "inline-block";
+                    document.getElementById("error2").innerText = "Недостаточно долек на балансе!"
+                }
+                else if (data.status === "ok") {
+                    window.location.href = "{{ url_for('done_page') }}";
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Ошибка при запросе");
+            });
+        }
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrangeBank</title>
+    <style>
+        body, html {
+            
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column; 
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
+        body {
+            background-image: url("static/img/bgor.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        #header1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            color: rgb(255, 176, 66);
+            font-size: 100px;
+            -webkit-text-stroke: 3px rgb(50, 50, 50);
+        }
+        #layer1 {
+            display: flex;         
+            flex: 1 0 auto;          
+            justify-content: center; 
+            align-items: center;    
+        }
+        #layer2 {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 500px;
+            align-items: center;
+        }
+        .btn {
+            display: block;
+            width: 400px;
+            padding: 10px;
+            text-align: center;
+            background: rgb(157, 219, 163);
+            border: 1px solid rgb(67, 115, 18);
+            cursor: pointer;
+            text-decoration: none;
+            color: rgb(205, 130, 0);
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background: rgb(193, 232, 180);
+            color: rgb(255, 169, 20);
+            transform: scale(1.05);
+        }
+
+        #modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; /* скрыто по умолчанию */
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal-window {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 250px;
+            text-align: center;
+            background-color: rgb(241, 180, 183);
+            font-weight: bold;
+            color: rgb(93, 158, 99);
+        }
+
+        #error_ov {
+            display: none;
+        }
+        @media (max-width: 600px) {
+            #header1 {
+                width: 80%;
+                font-size: 36px;
+                -webkit-text-stroke: 2px rgb(50, 50, 50);
+                margin-top: 20px;
+                align-self: center;
+            }
+
+            #layer2 {
+                width: 90%;
+            }
+
+            .btn {
+                width: 100%;
+                font-size: 18px;
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header1">
+    <h1>OrangeBank</h1>
+    </div>
+    <div id="layer1">
+        <div id="layer2">
+            <a href="{{ url_for('payment_page') }}" class="btn">Принять оплату</a>
+            <a href="{{ url_for('withdraw_page') }}" class="btn">Выдать дольки</a>
+            <a href="{{ url_for('stat_page') }}" class="btn">Сборы</a>
+            <a onclick="log_adm_in()" class="btn">Админ</a>
+        </div>
+    </div>
+    <div id="modal-overlay">
+        <div id="modal-window">
+            <p>Пароль админа:</p>
+            <p id="error_ov" style="display: none">Неверный пароль</p>
+            <input class="pw" id="pw" placeholder="Пароль">
+            <button id="ok-btn">Вход</button>
+        </div>
+    </div>
+    <script>
+        function log_adm_in() {
+            const overlay = document.getElementById("modal-overlay");
+            const modal = document.getElementById("modal-window");
+            const okBtn = document.getElementById("ok-btn");
+            overlay.style.display = "flex";
+            overlay.addEventListener("click", () => {
+                overlay.style.display = "none";
+            });
+
+            // Чтобы клик внутри модалки НЕ закрывал её
+            modal.addEventListener("click", (event) => {
+                event.stopPropagation();
+            });
+
+            okBtn.addEventListener("click", () => {
+                if (document.getElementById("pw").value === "02ofag") {
+                    window.location.href = "{{url_for('admin_page') }}";
+                } else {
+                    document.getElementById("error_ov").style.display = "flex"
+                }
+            });
+        }
+    </script>
+</body>
+</html>
