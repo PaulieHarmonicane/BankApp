@@ -1,9 +1,10 @@
 from flask import Flask, request, jsonify, render_template
 from model import db, Donation, Division
 from seed import seed_divisions as sd
+import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://gen_user:Apelsino2026@9bbd8f10be6329e35a6d7f12.twc1.net:5432/default_db?sslmode=verify-full"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 db.init_app(app)
 
 # with app.app_context():
