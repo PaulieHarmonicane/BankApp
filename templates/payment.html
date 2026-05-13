@@ -241,7 +241,7 @@
         .then(data => {
             c_don = data.id
             document.getElementById("label").innerText =
-                `Пожертвование сохранено. ID транзакции: ${c_don} Долек к выдаче: ${Math.floor(inp_data["rub_sum"]/60)}`;
+                `Пожертвование сохранено. ID транзакции: ${c_don} Долек к выдаче: ${Math.floor(inp_data["rub_sum"]/50)}`;
         })
         .catch(err => {
             console.error(err);
